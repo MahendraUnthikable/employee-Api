@@ -11,7 +11,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 # from rest_framework.authentication import TokenAuthentication
 
 # logger = logging.getLogger(__file__)
-
+# sdfsdfsd
 class register(APIView):
     def post(self, request):
         serializer=registratoinSerializer(data=request.data)
