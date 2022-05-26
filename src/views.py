@@ -8,16 +8,20 @@ from django.shortcuts import  get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
-# from rest_framework.authentication import TokenAuthentication
 
-# logger = logging.getLogger(__file__)
+
+logger = logging.getLogger(__file__)
 
 class register(APIView):
+    """this class is used to register employee data 
+    and save employee all details
+    in the database. 
+    """
     def post(self, request):
         serializer=registratoinSerializer(data=request.data)
         useremail=request.data['email']
         userphone=request.data['phone']
-        # logger.debug("This logs a debug message.")
+        
         if employeeRegistratoin.objects.filter(email=useremail).first():
             return Response({"status":"email already exists!!"})
         elif employeeRegistratoin.objects.filter(phone=userphone).first():
@@ -39,9 +43,13 @@ class register(APIView):
 
 class employeeProfile(APIView):
     authentication_classes=[JWTAuthentication]
-    # permission_classes=[IsAuthenticated]
+    permission_classes=[IsAuthenticated]
 
     def get(self,request,id=None):
+        """tihs function is used to get employee details
+        from the databse by their id and also get 
+        complete data from database.
+        """
         if id:
             item = employeeRegistratoin.objects.get(id=id)
             serializer = registratoinSerializer(item)
@@ -52,6 +60,10 @@ class employeeProfile(APIView):
         return Response({"status":"success","data":serializer.data},status=status.HTTP_200_OK)
 
     def patch(self,request, id=None):
+        """this function is used to modify employee
+        data from the database and also can modify
+        spacific employee details.
+        """
         if id:
             item = employeeRegistratoin.objects.get(id=id)
             serializer = registratoinSerializer(item, data=request.data, partial=True)
@@ -63,6 +75,9 @@ class employeeProfile(APIView):
 
 
     def put(self,request,id=None):
+        """this function can replace complete data 
+        of the employee data from the database.
+        """
         if id:
             item = employeeRegistratoin.objects.get(id=id)
             serializer = registratoinSerializer(item,data=request.data)            
@@ -74,6 +89,9 @@ class employeeProfile(APIView):
 
 
     def delete(self,request,id=None):            
+        """this function is used to delete
+        spacific employee details from the database.
+        """
         if id:
             item = get_object_or_404(employeeRegistratoin,id=id)
             item.delete()

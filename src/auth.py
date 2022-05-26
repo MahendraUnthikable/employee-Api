@@ -6,6 +6,9 @@ from .models import employeeRegistratoin
 
 
 class employeeLogin(APIView):
+    """this class is used to authenticate employee 
+      credentials from the database and authrize employee data. 
+      """  
     def post(self,request):
         serializer = registratoinSerializer(data=request.data)
         if serializer.is_valid():
